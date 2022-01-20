@@ -10,18 +10,32 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->speedSpinBox->setRange(-1.0, 1.0);
     ui->speedSpinBox->setSingleStep(0.05);
-    connect(this, SIGNAL(velSignal(geometry_msgs::Twist)), p_Qnode, SLOT(Publish(geometry_msgs::Twist)));
+    ui->speedSpinBox->setValue(0.0);
+
+    ui->speedSlider->setMinimum(0);
+    ui->speedSlider->setValue(0);
+    ui->speedSlider->setMaximum(100);
+    ui->speedSlider->setSingleStep(1);
+
+    connect(this, SIGNAL(velSignal(geometry_msgs::Twist)),
+            p_Qnode, SLOT(Publish(geometry_msgs::Twist)));
+
+    connect(ui->speedSpinBox, SIGNAL(valueChanged(double)),
+            p_Qnode, SLOT(setVelocityReference(double)));
+
+    connect(p_Qnode, SIGNAL(velRefSignal(double)),
+            ui->speedSpinBox, SLOT(setValue(double)));
+
+    connect(ui->speedSlider, SIGNAL(sliderMoved(int)),
+            p_Qnode, SLOT(setVelocityReference(int)));
+
+    connect(p_Qnode, SIGNAL(velRefSignal(int)),
+            ui->speedSlider, SLOT(setValue(int)));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-//Update reference velocity
-void MainWindow::on_speedSpinBox_valueChanged(double data)
-{
-    this->p_Qnode->velocityReferenceUpdate(data);
 }
 
 //Buttons commands

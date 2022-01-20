@@ -18,6 +18,12 @@ public:
 
 public slots:
     void Publish(geometry_msgs::Twist);
+    void setVelocityReference(double);
+    void setVelocityReference(int);
+
+signals:
+    void velRefSignal(double);
+    void velRefSignal(int);
 
 private:
     ros::NodeHandle* nh;

@@ -15,10 +15,28 @@ void Qnode::Publish(geometry_msgs::Twist msg)
     velocityPublisher.publish(msg);
 }
 
-//Update reference velocity
-void Qnode::velocityReferenceUpdate(double data)
+void Qnode::setVelocityReference(double value)
 {
-    velocityReference = data;
+    if (value != velocityReference)
+    {
+        velocityReference = value;
+        emit velRefSignal(static_cast<int>(velocityReference * 100));
+    }
+}
+
+void Qnode::setVelocityReference(int value)
+{
+    if (value != static_cast<int>(velocityReference * 100))
+    {
+        velocityReference = static_cast<double>(value) / 100;
+        emit velRefSignal(velocityReference);
+    }
+}
+
+//Update reference velocity
+void Qnode::velocityReferenceUpdate(double value)
+{
+    velocityReference = value;
 }
 
 //Return twist value

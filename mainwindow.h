@@ -24,8 +24,6 @@ signals:
 
 private slots:
 
-    void on_speedSpinBox_valueChanged(double arg1);
-
     void on_backward_pressed();
 
     void on_backward_released();
