@@ -38,11 +38,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Wheel speed data connections
     connect(p_Qnode, SIGNAL(velWheelSignal(sensor_msgs::JointState::ConstPtr)),
-            this, SLOT(setVelocityText(const sensor_msgs::JointState::ConstPtr&)));
+            this, SLOT(setVelocityText(sensor_msgs::JointState::ConstPtr)));
 
     //Odometry data connections
     connect(p_Qnode, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
-            this, SLOT(setOdomText(const nav_msgs::Odometry::ConstPtr&)));
+            this, SLOT(setOdomText(nav_msgs::Odometry::ConstPtr)));
 
     p_Qnode->moveToThread(&p_Qnode_thread);
     p_Qnode_thread.start();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>942</width>
-    <height>652</height>
+    <width>1030</width>
+    <height>587</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>80</y>
-      <width>321</width>
+      <x>120</x>
+      <y>20</y>
+      <width>651</width>
       <height>51</height>
      </rect>
     </property>
@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="text">
-     <string>JOY STICK CONTROLLER</string>
+     <string>VKIST OMNIDIRECTIONAL ROBOT GUI (ver. 1.2)</string>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -219,9 +219,9 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>150</y>
-      <width>241</width>
+      <x>590</x>
+      <y>100</y>
+      <width>311</width>
       <height>131</height>
      </rect>
     </property>
@@ -233,7 +233,7 @@
       <rect>
        <x>0</x>
        <y>20</y>
-       <width>241</width>
+       <width>311</width>
        <height>111</height>
       </rect>
      </property>
@@ -254,7 +254,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QTextEdit" name="left_wheel"/>
+       <widget class="QTextEdit" name="left_wheel">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
@@ -272,7 +278,13 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QTextEdit" name="right_wheel"/>
+       <widget class="QTextEdit" name="right_wheel">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_5">
@@ -290,7 +302,13 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QTextEdit" name="rear_wheel"/>
+       <widget class="QTextEdit" name="rear_wheel">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -298,10 +316,10 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>290</y>
+      <x>590</x>
+      <y>280</y>
       <width>311</width>
-      <height>191</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="title">
@@ -313,7 +331,7 @@
        <x>0</x>
        <y>20</y>
        <width>311</width>
-       <height>171</height>
+       <height>181</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
@@ -339,7 +357,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QTextEdit" name="linear_x"/>
+       <widget class="QTextEdit" name="linear_x">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_7">
@@ -357,7 +381,13 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QTextEdit" name="linear_y"/>
+       <widget class="QTextEdit" name="linear_y">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_8">
@@ -375,7 +405,13 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QTextEdit" name="angular"/>
+       <widget class="QTextEdit" name="angular">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_9">
@@ -393,7 +429,13 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QTextEdit" name="pose_x"/>
+       <widget class="QTextEdit" name="pose_x">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_10">
@@ -411,7 +453,13 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QTextEdit" name="pose_y"/>
+       <widget class="QTextEdit" name="pose_y">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -422,7 +470,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>942</width>
+     <width>1030</width>
      <height>20</height>
     </rect>
    </property>
