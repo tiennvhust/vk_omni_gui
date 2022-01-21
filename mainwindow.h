@@ -21,6 +21,7 @@ public:
 
 signals:
     void velSignal(geometry_msgs::Twist);
+    void subscribeSignal();
 
 private slots:
     void on_backward_pressed();

@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     p_Qnode(new Qnode(nh))
 {
+    qRegisterMetaType<sensor_msgs::JointState::ConstPtr>("sensor_msgs::JointState::ConstPtr");
     ui->setupUi(this);
 
     ui->speedSpinBox->setRange(-1.0, 1.0);
@@ -21,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(this, SIGNAL(velSignal(geometry_msgs::Twist)),
             p_Qnode, SLOT(Publish(geometry_msgs::Twist)));
+
+    connect(this, SIGNAL(subscribeSignal()),
+            p_Qnode, SLOT(Subscribe()));
 
     //Velocity reference connections
 
@@ -47,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     p_Qnode->moveToThread(&p_Qnode_thread);
     p_Qnode_thread.start();
 
+    emit subscribeSignal();
 }
 
 MainWindow::~MainWindow()

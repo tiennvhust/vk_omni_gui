@@ -7,16 +7,26 @@
 Qnode::Qnode(ros::NodeHandle& nh_)
 {
     nh = &nh_;
-    velocityPublisher = nh->advertise<geometry_msgs::Twist>("cmd_vel", 100);
-    velocitySubsciber = nh->subscribe<sensor_msgs::JointState>("/robot_kist/joint_states", 10, &Qnode::velocityCallback, this);
-    odomSubscriber = nh->subscribe<nav_msgs::Odometry>("odom", 10, &Qnode::odomCallback, this);
 }
 
 Qnode::~Qnode() {}
 
 void Qnode::Publish(geometry_msgs::Twist msg)
 {
+    velocityPublisher = nh->advertise<geometry_msgs::Twist>("cmd_vel", 100);
     velocityPublisher.publish(msg);
+}
+
+void Qnode::Subscribe()
+{
+    velocitySubsciber = nh->subscribe<sensor_msgs::JointState>("/robot_kist/joint_states", 10, &Qnode::velocityCallback, this);
+    odomSubscriber = nh->subscribe<nav_msgs::Odometry>("odom", 10, &Qnode::odomCallback, this);
+    //run ROS loop
+    ros::Rate loop_rate(20);
+    while (ros::ok()) {
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
 }
 
 void Qnode::setVelocityReference(double value)

@@ -22,6 +22,7 @@ public:
 
 public slots:
     void Publish(geometry_msgs::Twist);
+    void Subscribe();
     void setVelocityReference(double);
     void setVelocityReference(int);
 
