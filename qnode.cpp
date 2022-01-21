@@ -56,19 +56,11 @@ geometry_msgs::Twist Qnode::twistReference(double x, double y, double z)
 //Callback function for joint state subscriber
 void Qnode::velocityCallback(const sensor_msgs::JointState::ConstPtr &msg)
 {
-//    emit velLeft(QString::number(msg.velocity[0]));
-//    emit velRight(QString::number(msg.velocity[1]));
-//    emit velRear(QString::number(msg.velocity[2]));
     emit velWheelSignal(msg);
 }
 
 //Callback function for odometry subscriber
 void Qnode::odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
 {
-//    emit velLinearX(QString::number(msg->twist.twist.linear.x));
-//    emit velLinearY(QString::number(msg->twist.twist.linear.y));
-//    emit velAngular(QString::number(msg->twist.twist.angular.z));
-//    emit posePointX(QString::number(msg->pose.pose.position.x));
-//    emit posePointY(QString::number(msg->pose.pose.position.y));
     emit odomSignal(msg);
 }

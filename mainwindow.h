@@ -65,6 +65,7 @@ private:
     ros::NodeHandle nh;
 
     Qnode* p_Qnode;
+    QThread p_Qnode_thread;
 
 };
 

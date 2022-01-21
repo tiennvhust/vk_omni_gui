@@ -37,39 +37,21 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->speedSlider, SLOT(setValue(int)));
 
     //Wheel speed data connections
-    connect(p_Qnode, SIGNAL(velWheelSignal(const sensor_msgs::JointState::ConstPtr&)),
+    connect(p_Qnode, SIGNAL(velWheelSignal(sensor_msgs::JointState::ConstPtr)),
             this, SLOT(setVelocityText(const sensor_msgs::JointState::ConstPtr&)));
-//    connect(this->p_Qnode, SIGNAL(velLeft(const QString&)),
-//            ui->left_wheel, SLOT(setText(const QString&)));
-
-//    connect(this->p_Qnode, SIGNAL(velRight(const QString&)),
-//            ui->right_wheel, SLOT(setText(const QString&)));
-
-//    connect(this->p_Qnode, SIGNAL(velRear(const QString&)),
-//            ui->rear_wheel, SLOT(setText(const QString&)));
 
     //Odometry data connections
-    connect(p_Qnode, SIGNAL(odomSignal(const nav_msgs::Odometry::ConstPtr&)),
+    connect(p_Qnode, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
             this, SLOT(setOdomText(const nav_msgs::Odometry::ConstPtr&)));
-//    connect(this->p_Qnode, SIGNAL(velLinearX(const Qstring&)),
-//            ui->linear_x, SLOT(setText(const Qstring&)));
 
-//    connect(this->p_Qnode, SIGNAL(velLinearY(const Qstring&)),
-//            ui->linear_y, SLOT(setText(const Qstring&)));
-
-//    connect(this->p_Qnode, SIGNAL(velAngular(const Qstring&)),
-//            ui->angular, SLOT(setText(const Qstring&)));
-
-//    connect(this->p_Qnode, SIGNAL(posePointX(const Qstring&)),
-//            ui->pose_x, SLOT(setText(const Qstring&)));
-
-//    connect(this->p_Qnode, SIGNAL(posePointY(const Qstring&)),
-//            ui->pose_y, SLOT(setText(const Qstring&)));
+    p_Qnode->moveToThread(&p_Qnode_thread);
+    p_Qnode_thread.start();
 
 }
 
 MainWindow::~MainWindow()
 {
+    p_Qnode_thread.quit();
     delete this->p_Qnode;
     delete ui;
 }

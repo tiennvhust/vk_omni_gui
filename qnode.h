@@ -29,20 +29,8 @@ signals:
     void velRefSignal(double);
     void velRefSignal(int);
 
-    void velWheelSignal(const sensor_msgs::JointState::ConstPtr&);
-    void odomSignal(const nav_msgs::Odometry::ConstPtr&);
-
-
-//    void velLeft(const QString&);
-//    void velRight(const QString&);
-//    void velRear(const QString&);
-
-//    void velLinearX(const QString&);
-//    void velLinearY(const QString&);
-//    void velAngular(const QString&);
-
-//    void posePointX(const QString&);
-//    void posePointY(const QString&);
+    void velWheelSignal(sensor_msgs::JointState::ConstPtr);
+    void odomSignal(nav_msgs::Odometry::ConstPtr);
 
 private:
     ros::NodeHandle* nh;
