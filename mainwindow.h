@@ -23,7 +23,6 @@ signals:
     void velSignal(geometry_msgs::Twist);
 
 private slots:
-
     void on_backward_pressed();
 
     void on_backward_released();
@@ -39,6 +38,22 @@ private slots:
     void on_left_pressed();
 
     void on_left_released();
+
+    void on_forward_right_pressed();
+
+    void on_forward_right_released();
+
+    void on_backward_right_pressed();
+
+    void on_backward_right_released();
+
+    void on_backward_left_pressed();
+
+    void on_backward_left_released();
+
+    void on_forward_left_pressed();
+
+    void on_forward_left_released();
 
 private:
     Ui::MainWindow *ui;
