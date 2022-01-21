@@ -5,7 +5,8 @@
 #include <QThread>
 
 #include <ros/ros.h>
-#include <qnode.h>
+#include <qpublish.h>
+#include <qsubscribe.h>
 
 namespace Ui {
 class MainWindow;
@@ -65,9 +66,11 @@ private:
 
     ros::NodeHandle nh;
 
-    Qnode* p_Qnode;
-    QThread p_Qnode_thread;
+    QPublish* p_QPublish;
+    QSubscribe* p_QSubscribe;
 
+    QThread p_QPublish_thread;
+    QThread p_QSubscribe_thread;
 };
 
 #endif // MAINWINDOW_H

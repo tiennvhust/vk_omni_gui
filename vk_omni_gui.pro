@@ -29,11 +29,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        qnode.cpp
+        qpublish.cpp \
+        qsubscribe.cpp
 
 HEADERS += \
         mainwindow.h \
-        qnode.h
+        qpublish.h \
+        qsubscribe.h
 
 FORMS += \
         mainwindow.ui

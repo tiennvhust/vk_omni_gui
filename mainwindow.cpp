@@ -6,9 +6,12 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    p_Qnode(new Qnode(nh))
+    p_QPublish(new QPublish(nh)),
+    p_QSubscribe(new QSubscribe(nh))
 {
     qRegisterMetaType<sensor_msgs::JointState::ConstPtr>("sensor_msgs::JointState::ConstPtr");
+    qRegisterMetaType<geometry_msgs::Twist>("geometry_msgs::Twist");
+
     ui->setupUi(this);
 
     ui->speedSpinBox->setRange(-1.0, 1.0);
@@ -21,125 +24,130 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->speedSlider->setSingleStep(1);
 
     connect(this, SIGNAL(velSignal(geometry_msgs::Twist)),
-            p_Qnode, SLOT(Publish(geometry_msgs::Twist)));
+            p_QPublish, SLOT(Publish(geometry_msgs::Twist)));
 
     connect(this, SIGNAL(subscribeSignal()),
-            p_Qnode, SLOT(Subscribe()));
+            p_QSubscribe, SLOT(Subscribe()));
 
     //Velocity reference connections
 
     connect(ui->speedSpinBox, SIGNAL(valueChanged(double)),
-            p_Qnode, SLOT(setVelocityReference(double)));
+            p_QPublish, SLOT(setVelocityReference(double)));
 
-    connect(p_Qnode, SIGNAL(velRefSignal(double)),
+    connect(p_QPublish, SIGNAL(velRefSignal(double)),
             ui->speedSpinBox, SLOT(setValue(double)));
 
     connect(ui->speedSlider, SIGNAL(sliderMoved(int)),
-            p_Qnode, SLOT(setVelocityReference(int)));
+            p_QPublish, SLOT(setVelocityReference(int)));
 
-    connect(p_Qnode, SIGNAL(velRefSignal(int)),
+    connect(p_QPublish, SIGNAL(velRefSignal(int)),
             ui->speedSlider, SLOT(setValue(int)));
 
     //Wheel speed data connections
-    connect(p_Qnode, SIGNAL(velWheelSignal(sensor_msgs::JointState::ConstPtr)),
+    connect(p_QSubscribe, SIGNAL(velWheelSignal(sensor_msgs::JointState::ConstPtr)),
             this, SLOT(setVelocityText(sensor_msgs::JointState::ConstPtr)));
 
     //Odometry data connections
-    connect(p_Qnode, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
+    connect(p_QSubscribe, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
             this, SLOT(setOdomText(nav_msgs::Odometry::ConstPtr)));
 
-    p_Qnode->moveToThread(&p_Qnode_thread);
-    p_Qnode_thread.start();
+    p_QPublish->moveToThread(&p_QPublish_thread);
+    p_QSubscribe->moveToThread(&p_QSubscribe_thread);
+
+    p_QPublish_thread.start();
+    p_QSubscribe_thread.start();
 
     emit subscribeSignal();
 }
 
 MainWindow::~MainWindow()
 {
-    p_Qnode_thread.quit();
-    delete this->p_Qnode;
+    p_QPublish_thread.quit();
+    p_QSubscribe_thread.quit();
+    delete this->p_QPublish;
+    delete this->p_QSubscribe;
     delete ui;
 }
 
 //Buttons commands
 void MainWindow::on_backward_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(1, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(1, 0, 0));
 }
 
 void MainWindow::on_backward_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_forward_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(-1, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(-1, 0, 0));
 }
 
 void MainWindow::on_forward_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_right_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 1, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 1, 0));
 }
 
 void MainWindow::on_right_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_left_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, -1, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, -1, 0));
 }
 
 void MainWindow::on_left_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_forward_right_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(-qSqrt(2)/2, qSqrt(2)/2, 0));
+    emit velSignal(this->p_QPublish->twistReference(-qSqrt(2)/2, qSqrt(2)/2, 0));
 }
 
 void MainWindow::on_forward_right_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_backward_right_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(qSqrt(2)/2, qSqrt(2)/2, 0));
+    emit velSignal(this->p_QPublish->twistReference(qSqrt(2)/2, qSqrt(2)/2, 0));
 }
 
 void MainWindow::on_backward_right_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_backward_left_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(qSqrt(2)/2, -qSqrt(2)/2, 0));
+    emit velSignal(this->p_QPublish->twistReference(qSqrt(2)/2, -qSqrt(2)/2, 0));
 }
 
 void MainWindow::on_backward_left_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 void MainWindow::on_forward_left_pressed()
 {
-    emit velSignal(this->p_Qnode->twistReference(-qSqrt(2)/2, -qSqrt(2)/2, 0));
+    emit velSignal(this->p_QPublish->twistReference(-qSqrt(2)/2, -qSqrt(2)/2, 0));
 }
 
 void MainWindow::on_forward_left_released()
 {
-    emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
 }
 
 

@@ -1,5 +1,5 @@
-#ifndef QNODE_H
-#define QNODE_H
+#ifndef QPublish_H
+#define QPublish_H
 
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
@@ -9,12 +9,12 @@
 #include <QString>
 
 
-class Qnode : public QObject
+class QPublish : public QObject
 {
     Q_OBJECT
 public:
-    Qnode(ros::NodeHandle& nh_);
-    ~Qnode();
+    QPublish(ros::NodeHandle& nh);
+    ~QPublish();
 
     void velocityReferenceUpdate(double data);
     geometry_msgs::Twist twistReference(double x, double y, double z);
@@ -22,7 +22,6 @@ public:
 
 public slots:
     void Publish(geometry_msgs::Twist);
-    void Subscribe();
     void setVelocityReference(double);
     void setVelocityReference(int);
 
@@ -30,19 +29,11 @@ signals:
     void velRefSignal(double);
     void velRefSignal(int);
 
-    void velWheelSignal(sensor_msgs::JointState::ConstPtr);
-    void odomSignal(nav_msgs::Odometry::ConstPtr);
-
 private:
     ros::NodeHandle* nh;
     ros::Publisher velocityPublisher;
-    ros::Subscriber velocitySubsciber;
-    ros::Subscriber odomSubscriber;
 
     double velocityReference;
-
-    void velocityCallback(const sensor_msgs::JointState::ConstPtr &msg);
-    void odomCallback(const nav_msgs::Odometry::ConstPtr &msg);
 };
 
-#endif // QNODE_H
+#endif // QPublish_H
