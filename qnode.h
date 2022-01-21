@@ -29,16 +29,20 @@ signals:
     void velRefSignal(double);
     void velRefSignal(int);
 
-    void velLeft(const QString&);
-    void velRight(const QString&);
-    void velRear(const QString&);
+    void velWheelSignal(const sensor_msgs::JointState::ConstPtr&);
+    void odomSignal(const nav_msgs::Odometry::ConstPtr&);
 
-    void velLinearX(const QString&);
-    void velLinearY(const QString&);
-    void velAngular(const QString&);
 
-    void posePointX(const QString&);
-    void posePointY(const QString&);
+//    void velLeft(const QString&);
+//    void velRight(const QString&);
+//    void velRear(const QString&);
+
+//    void velLinearX(const QString&);
+//    void velLinearY(const QString&);
+//    void velAngular(const QString&);
+
+//    void posePointX(const QString&);
+//    void posePointY(const QString&);
 
 private:
     ros::NodeHandle* nh;
@@ -48,7 +52,7 @@ private:
 
     double velocityReference;
 
-    void velocityCallback(sensor_msgs::JointState);
+    void velocityCallback(const sensor_msgs::JointState::ConstPtr &msg);
     void odomCallback(const nav_msgs::Odometry::ConstPtr &msg);
 };
 

@@ -37,30 +37,34 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->speedSlider, SLOT(setValue(int)));
 
     //Wheel speed data connections
-    connect(this->p_Qnode, SIGNAL(velLeft(const QString&)),
-            ui->left_wheel, SLOT(setText(const QString&)));
+    connect(p_Qnode, SIGNAL(velWheelSignal(const sensor_msgs::JointState::ConstPtr&)),
+            this, SLOT(setVelocityText(const sensor_msgs::JointState::ConstPtr&)));
+//    connect(this->p_Qnode, SIGNAL(velLeft(const QString&)),
+//            ui->left_wheel, SLOT(setText(const QString&)));
 
-    connect(this->p_Qnode, SIGNAL(velRight(const QString&)),
-            ui->right_wheel, SLOT(setText(const QString&)));
+//    connect(this->p_Qnode, SIGNAL(velRight(const QString&)),
+//            ui->right_wheel, SLOT(setText(const QString&)));
 
-    connect(this->p_Qnode, SIGNAL(velRear(const QString&)),
-            ui->rear_wheel, SLOT(setText(const QString&)));
+//    connect(this->p_Qnode, SIGNAL(velRear(const QString&)),
+//            ui->rear_wheel, SLOT(setText(const QString&)));
 
     //Odometry data connections
-    connect(this->p_Qnode, SIGNAL(velLinearX(const Qstring&)),
-            ui->linear_x, SLOT(setText(const Qstring&)));
+    connect(p_Qnode, SIGNAL(odomSignal(const nav_msgs::Odometry::ConstPtr&)),
+            this, SLOT(setOdomText(const nav_msgs::Odometry::ConstPtr&)));
+//    connect(this->p_Qnode, SIGNAL(velLinearX(const Qstring&)),
+//            ui->linear_x, SLOT(setText(const Qstring&)));
 
-    connect(this->p_Qnode, SIGNAL(velLinearY(const Qstring&)),
-            ui->linear_y, SLOT(setText(const Qstring&)));
+//    connect(this->p_Qnode, SIGNAL(velLinearY(const Qstring&)),
+//            ui->linear_y, SLOT(setText(const Qstring&)));
 
-    connect(this->p_Qnode, SIGNAL(velAngular(const Qstring&)),
-            ui->angular, SLOT(setText(const Qstring&)));
+//    connect(this->p_Qnode, SIGNAL(velAngular(const Qstring&)),
+//            ui->angular, SLOT(setText(const Qstring&)));
 
-    connect(this->p_Qnode, SIGNAL(posePointX(const Qstring&)),
-            ui->pose_x, SLOT(setText(const Qstring&)));
+//    connect(this->p_Qnode, SIGNAL(posePointX(const Qstring&)),
+//            ui->pose_x, SLOT(setText(const Qstring&)));
 
-    connect(this->p_Qnode, SIGNAL(posePointY(const Qstring&)),
-            ui->pose_y, SLOT(setText(const Qstring&)));
+//    connect(this->p_Qnode, SIGNAL(posePointY(const Qstring&)),
+//            ui->pose_y, SLOT(setText(const Qstring&)));
 
 }
 
@@ -149,4 +153,23 @@ void MainWindow::on_forward_left_pressed()
 void MainWindow::on_forward_left_released()
 {
     emit velSignal(this->p_Qnode->twistReference(0, 0, 0));
+}
+
+
+//Display velocity data
+void MainWindow::setVelocityText(const sensor_msgs::JointState::ConstPtr &msg)
+{
+    ui->left_wheel->setText(QString::number(msg->velocity[0]));
+    ui->right_wheel->setText(QString::number(msg->velocity[1]));
+    ui->rear_wheel->setText(QString::number(msg->velocity[2]));
+}
+
+//Display odometry data
+void MainWindow::setOdomText(const nav_msgs::Odometry::ConstPtr &msg)
+{
+    ui->linear_x->setText(QString::number(msg->twist.twist.linear.x));
+    ui->linear_y->setText(QString::number(msg->twist.twist.linear.y));
+    ui->angular->setText(QString::number(msg->twist.twist.angular.z));
+    ui->pose_x->setText(QString::number(msg->pose.pose.position.x));
+    ui->pose_y->setText(QString::number(msg->pose.pose.position.y));
 }

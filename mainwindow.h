@@ -55,6 +55,10 @@ private slots:
 
     void on_forward_left_released();
 
+    void setVelocityText(const sensor_msgs::JointState::ConstPtr&);
+
+    void setOdomText(const nav_msgs::Odometry::ConstPtr&);
+
 private:
     Ui::MainWindow *ui;
 
