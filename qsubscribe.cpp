@@ -15,6 +15,7 @@ void QSubscribe::Subscribe()
 {
     velocitySubsciber = nh->subscribe<sensor_msgs::JointState>("/robot_kist/joint_states", 10, &QSubscribe::velocityCallback, this);
     odomSubscriber = nh->subscribe<nav_msgs::Odometry>("odom", 10, &QSubscribe::odomCallback, this);
+//    statusSubscriber = nh->subscribe("robot_status", 1, );
     //run ROS loop
     ros::Rate loop_rate(20);
     while (ros::ok()) {
@@ -34,3 +35,9 @@ void QSubscribe::odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
 {
     emit odomSignal(msg);
 }
+
+//Callback function for status subscriber
+//void QSubscribe::statusCallback(robot_status msg)
+//{
+//    emit statusSignal(msg);
+//}

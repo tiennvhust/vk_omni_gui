@@ -61,6 +61,12 @@ private slots:
 
     void setOdomText(const nav_msgs::Odometry::ConstPtr &msg);
 
+    void onStatusUpdate(robot_status);
+
+    void onBatteryUpdate(int);
+
+    void on_battery_status_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
 
@@ -71,6 +77,8 @@ private:
 
     QThread p_QPublish_thread;
     QThread p_QSubscribe_thread;
+
+    QPalette normal_label, protective_label, emergency_label;
 };
 
 #endif // MAINWINDOW_H
