@@ -27,12 +27,14 @@ LIBS += -L/opt/ros/noetic/lib -lroscpp -lroslib -lrosconsole -lroscpp_serializat
 CONFIG += c++11
 
 SOURCES += \
+        joystick.cpp \
         main.cpp \
         mainwindow.cpp \
         qpublish.cpp \
         qsubscribe.cpp
 
 HEADERS += \
+        joystick.h \
         mainwindow.h \
         qpublish.h \
         qsubscribe.h
@@ -46,4 +48,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    images.qrc
+    images/images.qrc

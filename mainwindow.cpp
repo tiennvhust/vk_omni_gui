@@ -7,11 +7,40 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     p_QPublish(new QPublish(nh)),
-    p_QSubscribe(new QSubscribe(nh))
+    p_QSubscribe(new QSubscribe(nh)),
+    p_JoyStick(new JoyStick()),
+    QPublish_thread(),
+    QSubscribe_thread(),
+    JoyStick_thread()
 {
     qRegisterMetaType<sensor_msgs::JointState::ConstPtr>("sensor_msgs::JointState::ConstPtr");
     qRegisterMetaType<geometry_msgs::Twist>("geometry_msgs::Twist");
     qRegisterMetaType<nav_msgs::Odometry::ConstPtr>("nav_msgs::Odometry::ConstPtr");
+    qRegisterMetaType<array<double,3>>("array<double,3>");
+
+    QPixmap up(":/up.png");
+    QPixmap down(":/down.png");
+    QPixmap left(":/left.png");
+    QPixmap left_up(":/left_up.png");
+    QPixmap left_down(":/left_down.png");
+    QPixmap right(":/right.png");
+    QPixmap stop(":/stop.png");
+    QPixmap right_up(":/right_up.png");
+    QPixmap right_down(":/right_down.png");
+    QPixmap plus(":/plus.png");
+    QPixmap minus(":/minus.png");
+
+    QIcon up_icon(up);
+    QIcon down_icon(down);
+    QIcon left_icon(left);
+    QIcon left_up_icon(left_up);
+    QIcon left_down_icon(left_down);
+    QIcon rigth_icon(right);
+    QIcon right_up_icon(right_up);
+    QIcon right_down_icon(right_down);
+    QIcon stop_icon(stop);
+    QIcon plus_icon(plus);
+    QIcon minus_icon(minus);
 
     normal_label.setColor(QPalette::Window, Qt::green);
 //    normal.setColor(QPalette::WindowText, Qt::white);
@@ -24,23 +53,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->speedSpinBox->setSingleStep(0.05);
     ui->speedSpinBox->setValue(0.0);
 
-    ui->speedSlider->setMinimum(0);
+    ui->speedSlider->setMinimum(-100);
     ui->speedSlider->setValue(0);
     ui->speedSlider->setMaximum(100);
     ui->speedSlider->setSingleStep(1);
 
-    ui->joy_stick->setStyleSheet("QGroupBox { \
-                                    background-color: linen; \
-                                    border: 2px solid gray; \
-                                    border-radius: 5px; \
-                                    color: white; \
-                                    margin-top: 1ex;} /* leave space at the top for the title */ \
-                                QGroupBox::title { \
-                                    subcontrol-origin: margin; \
-                                    subcontrol-position: top center; /* position at the top center */ \
-                                    padding: 0 3px; \
-                                    background-color: gray;} \
-                                ");
+//    ui->joy_stick->setStyleSheet("QGroupBox { \
+//                                    background-color: linen; \
+//                                    border: 2px solid gray; \
+//                                    border-radius: 5px; \
+//                                    color: white; \
+//                                    margin-top: 1ex;} /* leave space at the top for the title */ \
+//                                QGroupBox::title { \
+//                                    subcontrol-origin: margin; \
+//                                    subcontrol-position: top center; /* position at the top center */ \
+//                                    padding: 0 3px; \
+//                                    background-color: gray;} \
+//                                ");
 
     ui->speed_group->setStyleSheet("QGroupBox { \
                                    background-color: linen; \
@@ -69,116 +98,170 @@ MainWindow::MainWindow(QWidget *parent) :
                               ");
 
     ui->forward->setStyleSheet("QPushButton \
-                                    {background-color: #FF6A64; \
-                                    height: 50px; \
+                                    {background-color: orange; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #CC5450; \
+                                    {background-color: darkorange; \
                                     border-style: inset;} \
                                 ");
+    ui->forward->setIcon(up_icon);
+    ui->forward->setIconSize(QSize(30, 30));
 
     ui->backward->setStyleSheet("QPushButton \
-                                    {background-color: #FF6A64; \
-                                    height: 50px; \
+                                    {background-color: green; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #CC5450; \
+                                    {background-color: darkgreen; \
                                     border-style: inset;} \
                                 ");
+    ui->backward->setIcon(down_icon);
+    ui->backward->setIconSize(QSize(30, 30));
 
     ui->left->setStyleSheet("QPushButton \
-                                    {background-color: #FF6A64; \
-                                    height: 50px; \
+                                    {background-color: lightskyblue; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #CC5450; \
+                                    {background-color: skyblue; \
                                     border-style: inset;} \
                                 ");
+    ui->left->setIcon(left_icon);
+    ui->left->setIconSize(QSize(30, 30));
 
     ui->right->setStyleSheet("QPushButton \
-                                    {background-color: #FF6A64; \
-                                    height: 50px; \
+                                    {background-color: lightcoral; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #CC5450; \
+                                    {background-color: indianred; \
                                     border-style: inset;} \
                                 ");
+    ui->right->setIcon(rigth_icon);
+    ui->right->setIconSize(QSize(30, 30));
 
     ui->forward_left->setStyleSheet("QPushButton \
-                                    {background-color: steelblue; \
-                                    height: 50px; \
+                                    {background-color: lightgray; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #325D80; \
+                                    {background-color: gray; \
                                     border-style: inset;} \
                                 ");
+    ui->forward_left->setIcon(left_up_icon);
+    ui->forward_left->setIconSize(QSize(30, 30));
 
     ui->forward_right->setStyleSheet("QPushButton \
-                                    {background-color: steelblue; \
-                                    height: 50px; \
+                                    {background-color: lightgray; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #325D80; \
+                                    {background-color: gray; \
+                                    border-style: inset;} \
+                                ");
+    ui->forward_right->setIcon(right_up_icon);
+    ui->forward_right->setIconSize(QSize(30, 30));
+
+    ui->backward_left->setStyleSheet("QPushButton \
+                                    {background-color: lightgray; \
+                                    border-style: outset; \
+                                    border-radius: 10px; \
+                                    border-width: 4px; \
+                                    border-color: silver; \
+                                    padding: 6px; \
+                                    color: white;} \
+                                QPushButton:pressed \
+                                    {background-color: gray; \
                                     border-style: inset;} \
                                 ");
 
-    ui->backward_left->setStyleSheet("QPushButton \
-                                    {background-color: steelblue; \
-                                    height: 50px; \
-                                    border-style: outset; \
-                                    border-radius: 10px; \
-                                    border-width: 6px; \
-                                    border-color: silver; \
-                                    padding: 6px; \
-                                    color: white;} \
-                                QPushButton:pressed \
-                                    {background-color: #325D80; \
-                                    border-style: inset;} \
-                                ");
+    ui->backward_left->setIcon(left_down_icon);
+    ui->backward_left->setIconSize(QSize(30, 30));
     
     ui->backward_right->setStyleSheet("QPushButton \
-                                    {background-color: steelblue; \
-                                    height: 50px; \
+                                    {background-color: lightgray; \
                                     border-style: outset; \
                                     border-radius: 10px; \
-                                    border-width: 6px; \
+                                    border-width: 4px; \
                                     border-color: silver; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: #325D80; \
+                                    {background-color: gray; \
                                     border-style: inset;} \
                                 ");
+    ui->backward_right->setIcon(right_down_icon);
+    ui->backward_right->setIconSize(QSize(30, 30));
+
+    ui->break_button->setStyleSheet("QPushButton \
+                                    {background-color: red; \
+                                    border-style: outset; \
+                                    border-radius: 10px; \
+                                    border-width: 4px; \
+                                    border-color: silver; \
+                                    padding: 6px; \
+                                    color: white;} \
+                                QPushButton:pressed \
+                                    {background-color: darkred; \
+                                    border-style: inset;} \
+                                ");
+    ui->break_button->setIcon(stop_icon);
+    ui->break_button->setIconSize(QSize(30, 30));
+
+    ui->speedup->setStyleSheet("QPushButton \
+                                    {background-color: lightgray; \
+                                    border-style: outset; \
+                                    border-radius: 10px; \
+                                    border-width: 4px; \
+                                    border-color: silver; \
+                                    padding: 6px; \
+                                    color: white;} \
+                                QPushButton:pressed \
+                                    {background-color: gray; \
+                                    border-style: inset;} \
+                                ");
+    ui->speedup->setIcon(plus_icon);
+    ui->speedup->setIconSize(QSize(30, 30));
+
+    ui->speeddown->setStyleSheet("QPushButton \
+                                    {background-color: lightgray; \
+                                    border-style: outset; \
+                                    border-radius: 10px; \
+                                    border-width: 4px; \
+                                    border-color: silver; \
+                                    padding: 6px; \
+                                    color: white;} \
+                                QPushButton:pressed \
+                                    {background-color: gray; \
+                                    border-style: inset;} \
+                                ");
+    ui->speeddown->setIcon(minus_icon);
+    ui->speeddown->setIconSize(QSize(30, 30));
 
     ui->speedSlider->setStyleSheet("QSlider::groove:horizontal { \
                                        height: 14px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */ \
@@ -192,31 +275,40 @@ MainWindow::MainWindow(QWidget *parent) :
                                        width: 18px;} \
                                ");
 
+
     ui->status_label->setText("Robot Status");
     ui->status_label->setAutoFillBackground(true);
 //    ui->status_label->setPalette(normal_label);
 
-    ui->battery_status->setValue(80);
-
-    connect(this, SIGNAL(velSignal(geometry_msgs::Twist)),
-            p_QPublish, SLOT(Publish(geometry_msgs::Twist)));
+//    ui->battery_status->setValue(80);
 
     connect(this, SIGNAL(subscribeSignal()),
             p_QSubscribe, SLOT(Subscribe()));
 
-    //Velocity reference connections
+    connect(p_JoyStick, SIGNAL(velRefPublishSignal(geometry_msgs::Twist)),
+            p_QPublish, SLOT(Publish(geometry_msgs::Twist)));
 
+    //Joystick connections
     connect(ui->speedSpinBox, SIGNAL(valueChanged(double)),
-            p_QPublish, SLOT(setVelocityReference(double)));
+            p_JoyStick, SLOT(setVelRef(double)));
 
-    connect(p_QPublish, SIGNAL(velRefSignal(double)),
+    connect(p_JoyStick, SIGNAL(velRefSignal(double)),
             ui->speedSpinBox, SLOT(setValue(double)));
 
     connect(ui->speedSlider, SIGNAL(sliderMoved(int)),
-            p_QPublish, SLOT(setVelocityReference(int)));
+            p_JoyStick, SLOT(setVelRef(int)));
 
-    connect(p_QPublish, SIGNAL(velRefSignal(int)),
+    connect(p_JoyStick, SIGNAL(velRefSignal(int)),
             ui->speedSlider, SLOT(setValue(int)));
+
+    connect(this, SIGNAL(upSpinSignal(const bool*)),
+            p_JoyStick, SLOT(upSpinVelRef(const bool*)));
+
+    connect(this, SIGNAL(downSpinSignal(const bool*)),
+            p_JoyStick, SLOT(downSpinVelRef(const bool*)));
+
+    connect(this, SIGNAL(velSignal(array<double, 3>)),
+            p_JoyStick, SLOT(setTwist(array<double, 3>)));
 
     //Wheel speed data connections
     connect(p_QSubscribe, SIGNAL(velWheelSignal(sensor_msgs::JointState::ConstPtr)),
@@ -226,19 +318,22 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(p_QSubscribe, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
             this, SLOT(setOdomText(nav_msgs::Odometry::ConstPtr)));
 
-    p_QPublish->moveToThread(&p_QPublish_thread);
-    p_QSubscribe->moveToThread(&p_QSubscribe_thread);
+    p_QPublish->moveToThread(&QPublish_thread);
+    p_QSubscribe->moveToThread(&QSubscribe_thread);
+    p_JoyStick->moveToThread(&JoyStick_thread);
 
-    p_QPublish_thread.start();
-    p_QSubscribe_thread.start();
+    QPublish_thread.start();
+    QSubscribe_thread.start();
+    JoyStick_thread.start();
 
     emit subscribeSignal();
 }
 
 MainWindow::~MainWindow()
 {
-    p_QPublish_thread.quit();
-    p_QSubscribe_thread.quit();
+    QPublish_thread.quit();
+    QSubscribe_thread.quit();
+    JoyStick_thread.quit();
     delete this->p_QPublish;
     delete this->p_QSubscribe;
     delete ui;
@@ -247,82 +342,82 @@ MainWindow::~MainWindow()
 //Buttons commands
 void MainWindow::on_backward_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(1, 0, 0));
+    emit velSignal({1, 0, 0});
 }
 
 void MainWindow::on_backward_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_forward_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(-1, 0, 0));
+    emit velSignal({-1, 0, 0});
 }
 
 void MainWindow::on_forward_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_right_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 1, 0));
+    emit velSignal({0, 1, 0});
 }
 
 void MainWindow::on_right_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_left_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, -1, 0));
+    emit velSignal({0, -1, 0});
 }
 
 void MainWindow::on_left_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_forward_right_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(-qSqrt(2)/2, qSqrt(2)/2, 0));
+    emit velSignal({-qSqrt(2)/2, qSqrt(2)/2, 0});
 }
 
 void MainWindow::on_forward_right_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_backward_right_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(qSqrt(2)/2, qSqrt(2)/2, 0));
+    emit velSignal({qSqrt(2)/2, qSqrt(2)/2, 0});
 }
 
 void MainWindow::on_backward_right_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_backward_left_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(qSqrt(2)/2, -qSqrt(2)/2, 0));
+    emit velSignal({qSqrt(2)/2, -qSqrt(2)/2, 0});
 }
 
 void MainWindow::on_backward_left_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 void MainWindow::on_forward_left_pressed()
 {
-    emit velSignal(this->p_QPublish->twistReference(-qSqrt(2)/2, -qSqrt(2)/2, 0));
+    emit velSignal({-qSqrt(2)/2, -qSqrt(2)/2, 0});
 }
 
 void MainWindow::on_forward_left_released()
 {
-    emit velSignal(this->p_QPublish->twistReference(0, 0, 0));
+    emit velSignal({0, 0, 0});
 }
 
 
@@ -393,4 +488,26 @@ void MainWindow::on_battery_status_valueChanged(int value)
                                           width: 10px; \
                                           margin: 0.5px; \
                                           }");
+}
+
+void MainWindow::on_speedup_pressed()
+{
+    speedSpin = true;
+    emit upSpinSignal(&speedSpin);
+}
+
+void MainWindow::on_speeddown_pressed()
+{
+    speedSpin = true;
+    emit downSpinSignal(&speedSpin);
+}
+
+void MainWindow::on_speedup_released()
+{
+    speedSpin = false;
+}
+
+void MainWindow::on_speeddown_released()
+{
+    speedSpin = false;
 }

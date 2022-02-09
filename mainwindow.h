@@ -7,6 +7,10 @@
 #include <ros/ros.h>
 #include <qpublish.h>
 #include <qsubscribe.h>
+#include <joystick.h>
+
+#include <sensor_msgs/JointState.h>
+#include <nav_msgs/Odometry.h>
 
 namespace Ui {
 class MainWindow;
@@ -21,8 +25,13 @@ public:
     ~MainWindow();
 
 signals:
-    void velSignal(geometry_msgs::Twist);
+    void velSignal(array<double, 3>);
+
     void subscribeSignal();
+
+    void upSpinSignal(const bool*);
+
+    void downSpinSignal(const bool*);
 
 private slots:
     void on_backward_pressed();
@@ -67,6 +76,14 @@ private slots:
 
     void on_battery_status_valueChanged(int value);
 
+    void on_speedup_pressed();
+
+    void on_speeddown_pressed();
+
+    void on_speedup_released();
+
+    void on_speeddown_released();
+
 private:
     Ui::MainWindow *ui;
 
@@ -74,9 +91,13 @@ private:
 
     QPublish* p_QPublish;
     QSubscribe* p_QSubscribe;
+    JoyStick* p_JoyStick;
 
-    QThread p_QPublish_thread;
-    QThread p_QSubscribe_thread;
+    QThread QPublish_thread;
+    QThread QSubscribe_thread;
+    QThread JoyStick_thread;
+
+    bool speedSpin;
 
     QPalette normal_label, protective_label, emergency_label;
 };

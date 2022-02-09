@@ -15,9 +15,6 @@ public:
     QSubscribe(ros::NodeHandle& nh);
     ~QSubscribe();
 
-    void velocityReferenceUpdate(double data);
-    geometry_msgs::Twist twistReference(double x, double y, double z);
-
 public slots:
     void Subscribe();
 
