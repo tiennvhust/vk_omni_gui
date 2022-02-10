@@ -327,82 +327,47 @@ MainWindow::~MainWindow()
 }
 
 //Buttons commands
-void MainWindow::on_backward_pressed()
+void MainWindow::on_backward_clicked()
 {
     emit velSignal({1, 0, 0});
 }
 
-void MainWindow::on_backward_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_forward_pressed()
+void MainWindow::on_forward_clicked()
 {
     emit velSignal({-1, 0, 0});
 }
 
-void MainWindow::on_forward_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_right_pressed()
+void MainWindow::on_right_clicked()
 {
     emit velSignal({0, 1, 0});
 }
 
-void MainWindow::on_right_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_left_pressed()
+void MainWindow::on_left_clicked()
 {
     emit velSignal({0, -1, 0});
 }
 
-void MainWindow::on_left_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_forward_right_pressed()
+void MainWindow::on_forward_right_clicked()
 {
     emit velSignal({-qSqrt(2)/2, qSqrt(2)/2, 0});
 }
 
-void MainWindow::on_forward_right_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_backward_right_pressed()
+void MainWindow::on_backward_right_clicked()
 {
     emit velSignal({qSqrt(2)/2, qSqrt(2)/2, 0});
 }
 
-void MainWindow::on_backward_right_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_backward_left_pressed()
+void MainWindow::on_backward_left_clicked()
 {
     emit velSignal({qSqrt(2)/2, -qSqrt(2)/2, 0});
 }
 
-void MainWindow::on_backward_left_released()
-{
-    emit velSignal({0, 0, 0});
-}
-
-void MainWindow::on_forward_left_pressed()
+void MainWindow::on_forward_left_clicked()
 {
     emit velSignal({-qSqrt(2)/2, -qSqrt(2)/2, 0});
 }
 
-void MainWindow::on_forward_left_released()
+void MainWindow::on_break_button_clicked()
 {
     emit velSignal({0, 0, 0});
 }

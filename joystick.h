@@ -33,7 +33,10 @@ public slots:
 
 private:
     double vel_ref;
-    geometry_msgs::Twist twist;
+
+    array<double, 3> twist;
+
+    geometry_msgs::Twist getTwist();
 };
 
 #endif // JOYSTICK_H
