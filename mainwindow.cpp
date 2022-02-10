@@ -58,19 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->speedSlider->setMaximum(100);
     ui->speedSlider->setSingleStep(1);
 
-//    ui->joy_stick->setStyleSheet("QGroupBox { \
-//                                    background-color: linen; \
-//                                    border: 2px solid gray; \
-//                                    border-radius: 5px; \
-//                                    color: white; \
-//                                    margin-top: 1ex;} /* leave space at the top for the title */ \
-//                                QGroupBox::title { \
-//                                    subcontrol-origin: margin; \
-//                                    subcontrol-position: top center; /* position at the top center */ \
-//                                    padding: 0 3px; \
-//                                    background-color: gray;} \
-//                                ");
-
     ui->speed_group->setStyleSheet("QGroupBox { \
                                    background-color: linen; \
                                    border: 2px solid gray; \
@@ -98,105 +85,105 @@ MainWindow::MainWindow(QWidget *parent) :
                               ");
 
     ui->forward->setStyleSheet("QPushButton \
-                                    {background-color: orange; \
-                                    border-style: outset; \
+                                    {background-color: lightsalmon; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: darkorange; \
+                                    {background-color: #CC8062; \
                                     border-style: inset;} \
                                 ");
     ui->forward->setIcon(up_icon);
     ui->forward->setIconSize(QSize(30, 30));
 
     ui->backward->setStyleSheet("QPushButton \
-                                    {background-color: green; \
-                                    border-style: outset; \
+                                    {background-color: lightsalmon; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: darkgreen; \
+                                    {background-color: #CC8062; \
                                     border-style: inset;} \
                                 ");
     ui->backward->setIcon(down_icon);
     ui->backward->setIconSize(QSize(30, 30));
 
     ui->left->setStyleSheet("QPushButton \
-                                    {background-color: lightskyblue; \
-                                    border-style: outset; \
+                                    {background-color: lightsalmon; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: skyblue; \
+                                    {background-color: #CC8062; \
                                     border-style: inset;} \
                                 ");
     ui->left->setIcon(left_icon);
     ui->left->setIconSize(QSize(30, 30));
 
     ui->right->setStyleSheet("QPushButton \
-                                    {background-color: lightcoral; \
-                                    border-style: outset; \
+                                    {background-color: lightsalmon; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: indianred; \
+                                    {background-color: #CC8062; \
                                     border-style: inset;} \
                                 ");
     ui->right->setIcon(rigth_icon);
     ui->right->setIconSize(QSize(30, 30));
 
     ui->forward_left->setStyleSheet("QPushButton \
-                                    {background-color: lightgray; \
-                                    border-style: outset; \
+                                    {background-color: lightsteelblue; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: gray; \
+                                    {background-color: #8797AB; \
                                     border-style: inset;} \
                                 ");
     ui->forward_left->setIcon(left_up_icon);
     ui->forward_left->setIconSize(QSize(30, 30));
 
     ui->forward_right->setStyleSheet("QPushButton \
-                                    {background-color: lightgray; \
-                                    border-style: outset; \
+                                    {background-color: lightsteelblue; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: gray; \
+                                    {background-color: #8797AB; \
                                     border-style: inset;} \
                                 ");
     ui->forward_right->setIcon(right_up_icon);
     ui->forward_right->setIconSize(QSize(30, 30));
 
     ui->backward_left->setStyleSheet("QPushButton \
-                                    {background-color: lightgray; \
-                                    border-style: outset; \
+                                    {background-color: lightsteelblue; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: gray; \
+                                    {background-color: #8797AB; \
                                     border-style: inset;} \
                                 ");
 
@@ -204,60 +191,60 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->backward_left->setIconSize(QSize(30, 30));
     
     ui->backward_right->setStyleSheet("QPushButton \
-                                    {background-color: lightgray; \
-                                    border-style: outset; \
+                                    {background-color: lightsteelblue; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: gray; \
+                                    {background-color: #8797AB; \
                                     border-style: inset;} \
                                 ");
     ui->backward_right->setIcon(right_down_icon);
     ui->backward_right->setIconSize(QSize(30, 30));
 
     ui->break_button->setStyleSheet("QPushButton \
-                                    {background-color: red; \
-                                    border-style: outset; \
+                                    {background-color: lightcoral; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: darkred; \
+                                    {background-color: #BD6464; \
                                     border-style: inset;} \
                                 ");
     ui->break_button->setIcon(stop_icon);
     ui->break_button->setIconSize(QSize(30, 30));
 
     ui->speedup->setStyleSheet("QPushButton \
-                                    {background-color: lightgray; \
-                                    border-style: outset; \
+                                    {background-color: ghostwhite; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: gray; \
+                                    {background-color: #C6C6CC; \
                                     border-style: inset;} \
                                 ");
     ui->speedup->setIcon(plus_icon);
     ui->speedup->setIconSize(QSize(30, 30));
 
     ui->speeddown->setStyleSheet("QPushButton \
-                                    {background-color: lightgray; \
-                                    border-style: outset; \
+                                    {background-color: ghostwhite; \
+                                    border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: silver; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: gray; \
+                                    {background-color: #C6C6CC; \
                                     border-style: inset;} \
                                 ");
     ui->speeddown->setIcon(minus_icon);
@@ -280,7 +267,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->status_label->setAutoFillBackground(true);
 //    ui->status_label->setPalette(normal_label);
 
-//    ui->battery_status->setValue(80);
+    ui->battery_status->setValue(80);
 
     connect(this, SIGNAL(subscribeSignal()),
             p_QSubscribe, SLOT(Subscribe()));

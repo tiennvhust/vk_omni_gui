@@ -12,5 +12,6 @@
         <file>left_down.png</file>
         <file>minus.png</file>
         <file>plus.png</file>
+        <file>battery.png</file>
     </qresource>
 </RCC>
