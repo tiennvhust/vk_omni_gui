@@ -27,22 +27,25 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>150</y>
-      <width>391</width>
-      <height>31</height>
+      <x>290</x>
+      <y>140</y>
+      <width>441</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Bitstream Vera Sans</family>
-      <pointsize>14</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
+      <family>Ubuntu Mono</family>
+      <pointsize>18</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
      <string>OMNIDIRECTIONAL ROBOT GUI (ver. 1.0)</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="logo">
@@ -754,22 +757,94 @@
     <widget class="QPushButton" name="resetButton">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>150</y>
-       <width>121</width>
-       <height>101</height>
+       <x>290</x>
+       <y>100</y>
+       <width>211</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Ubuntu Mono</family>
+       <pointsize>18</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>280</y>
+       <width>521</width>
+       <height>61</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Ubuntu Mono</family>
        <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <italic>true</italic>
       </font>
      </property>
      <property name="text">
-      <string>READY</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ROS is ready! Robot is currently in PROTECTIVE state.&lt;/p&gt;&lt;p&gt;Push Ready button to start the robot.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="cover_02" native="true">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>200</y>
+      <width>781</width>
+      <height>401</height>
+     </rect>
+    </property>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>80</y>
+       <width>311</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">image: url(:/light.png);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>280</y>
+       <width>611</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Ubuntu Mono</family>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>Robot is currently in EMERGENCY state! All functions are halted.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
@@ -781,6 +856,7 @@
    <zorder>battery_status</zorder>
    <zorder>label_11</zorder>
    <zorder>cover_01</zorder>
+   <zorder>cover_02</zorder>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

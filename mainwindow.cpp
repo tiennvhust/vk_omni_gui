@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QPixmap right_down(":/right_down.png");
     QPixmap plus(":/plus.png");
     QPixmap minus(":/minus.png");
+    QPixmap ready(":/tick.png");
 
     QIcon up_icon(up);
     QIcon down_icon(down);
@@ -43,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QIcon stop_icon(stop);
     QIcon plus_icon(plus);
     QIcon minus_icon(minus);
+    QIcon ready_icon(ready);
 
     normal_label.setColor(QPalette::Window, Qt::green);
 //    normal.setColor(QPalette::WindowText, Qt::white);
@@ -265,7 +267,7 @@ MainWindow::MainWindow(QWidget *parent) :
                                ");
 
     ui->resetButton->setStyleSheet("QPushButton \
-                                    {background-color: lightseagreen; \
+                                    {background-color: bisque; \
                                     border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
@@ -273,9 +275,12 @@ MainWindow::MainWindow(QWidget *parent) :
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
-                                    {background-color: mediumseagreen; \
+                                    {background-color: #CCB79D; \
                                     border-style: inset;} \
                                 ");
+    ui->resetButton->setIcon(ready_icon);
+    ui->resetButton->setIconSize(QSize(60, 60));
+
     ui->status_label->setText("Robot Status");
     ui->status_label->setAutoFillBackground(true);
 //    ui->status_label->setPalette(normal_label);
@@ -334,6 +339,8 @@ MainWindow::MainWindow(QWidget *parent) :
     JoyStick_thread.start();
 
     emit subscribeSignal();
+
+    ui->cover_02->hide();
 }
 
 MainWindow::~MainWindow()
@@ -420,14 +427,17 @@ void MainWindow::onStatusUpdate(robot_status msg)
         case normal:
             ui->status_label->setText("Normal");
             ui->status_label->setPalette(normal_label);
+            ui->cover_01->hide();
             break;
         case protective:
             ui->status_label->setText("Protective");
             ui->status_label->setPalette(protective_label);
+            ui->cover_01->show();
             break;
         case emergency:
             ui->status_label->setText("Emergency");
             ui->status_label->setPalette(emergency_label);
+            ui->cover_02->show();
             break;
     }
 }
@@ -488,5 +498,4 @@ void MainWindow::on_speeddown_released()
 void MainWindow::on_resetButton_clicked()
 {
     emit plcCommandSignal(reset);
-    ui->cover_01->hide();
 }
