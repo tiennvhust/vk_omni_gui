@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QString>
 
+enum plcCommand {reset = 22, status = 23};
 
 class QPublish : public QObject
 {
@@ -15,11 +16,14 @@ public:
     ~QPublish();
 
 public slots:
-    void Publish(geometry_msgs::Twist);
+    void velocityPublish(geometry_msgs::Twist);
+
+    void plcCommandPublish(plcCommand);
 
 private:
     ros::NodeHandle* nh;
     ros::Publisher velocityPublisher;
+    ros::Publisher plcCommandPublisher;
 };
 
 #endif // QPublish_H

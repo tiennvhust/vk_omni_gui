@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<geometry_msgs::Twist>("geometry_msgs::Twist");
     qRegisterMetaType<nav_msgs::Odometry::ConstPtr>("nav_msgs::Odometry::ConstPtr");
     qRegisterMetaType<array<double,3>>("array<double,3>");
+    qRegisterMetaType<plcCommand>("plcCommand");
+    qRegisterMetaType<robot_status>("robot_status");
 
     QPixmap up(":/up.png");
     QPixmap down(":/down.png");
@@ -262,7 +264,18 @@ MainWindow::MainWindow(QWidget *parent) :
                                        width: 18px;} \
                                ");
 
-
+    ui->resetButton->setStyleSheet("QPushButton \
+                                    {background-color: lightseagreen; \
+                                    border-style: solid; \
+                                    border-radius: 10px; \
+                                    border-width: 4px; \
+                                    border-color: lightgray; \
+                                    padding: 6px; \
+                                    color: white;} \
+                                QPushButton:pressed \
+                                    {background-color: mediumseagreen; \
+                                    border-style: inset;} \
+                                ");
     ui->status_label->setText("Robot Status");
     ui->status_label->setAutoFillBackground(true);
 //    ui->status_label->setPalette(normal_label);
@@ -273,7 +286,7 @@ MainWindow::MainWindow(QWidget *parent) :
             p_QSubscribe, SLOT(Subscribe()));
 
     connect(p_JoyStick, SIGNAL(velRefPublishSignal(geometry_msgs::Twist)),
-            p_QPublish, SLOT(Publish(geometry_msgs::Twist)));
+            p_QPublish, SLOT(velocityPublish(geometry_msgs::Twist)));
 
     //Joystick connections
     connect(ui->speedSpinBox, SIGNAL(valueChanged(double)),
@@ -305,6 +318,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(p_QSubscribe, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
             this, SLOT(setOdomText(nav_msgs::Odometry::ConstPtr)));
 
+    //PLC connections
+    connect(p_QSubscribe, SIGNAL(statusSignal(robot_status)),
+            this, SLOT(onStatusUpdate(robot_status)));
+
+    connect(this, SIGNAL(plcCommandSignal(plcCommand)),
+            p_QPublish, SLOT(plcCommandPublish(plcCommand)));
+
     p_QPublish->moveToThread(&QPublish_thread);
     p_QSubscribe->moveToThread(&QSubscribe_thread);
     p_JoyStick->moveToThread(&JoyStick_thread);
@@ -323,6 +343,7 @@ MainWindow::~MainWindow()
     JoyStick_thread.quit();
     delete this->p_QPublish;
     delete this->p_QSubscribe;
+    delete this->p_JoyStick;
     delete ui;
 }
 
@@ -462,4 +483,10 @@ void MainWindow::on_speedup_released()
 void MainWindow::on_speeddown_released()
 {
     speedSpin = false;
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+    emit plcCommandSignal(reset);
+    ui->cover_01->hide();
 }

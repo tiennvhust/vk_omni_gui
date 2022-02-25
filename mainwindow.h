@@ -33,6 +33,8 @@ signals:
 
     void downSpinSignal(const bool*);
 
+    void plcCommandSignal(plcCommand);
+
 private slots:
     void on_backward_clicked();
 
@@ -69,6 +71,8 @@ private slots:
     void on_speedup_released();
 
     void on_speeddown_released();
+
+    void on_resetButton_clicked();
 
 private:
     Ui::MainWindow *ui;

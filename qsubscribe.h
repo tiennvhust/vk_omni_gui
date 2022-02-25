@@ -5,8 +5,9 @@
 #include <sensor_msgs/JointState.h>
 #include <nav_msgs/Odometry.h>
 #include <QObject>
+#include <std_msgs/UInt8.h>
 
-enum robot_status {normal, protective, emergency};
+enum robot_status {normal = 12, protective = 11, emergency = 10};
 
 class QSubscribe : public QObject
 {
@@ -31,7 +32,7 @@ private:
 
     void velocityCallback(const sensor_msgs::JointState::ConstPtr &msg);
     void odomCallback(const nav_msgs::Odometry::ConstPtr &msg);
-    void statusCallback(robot_status msg);
+    void statusCallback(std_msgs::UInt8 msg);
 };
 
 #endif // QSUBSCRIBE_H
