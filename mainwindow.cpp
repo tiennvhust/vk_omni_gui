@@ -428,6 +428,7 @@ void MainWindow::onStatusUpdate(robot_status msg)
             ui->status_label->setText("Normal");
             ui->status_label->setPalette(normal_label);
             ui->cover_01->hide();
+            ui->cover_02->hide();
             break;
         case protective:
             ui->status_label->setText("Protective");
