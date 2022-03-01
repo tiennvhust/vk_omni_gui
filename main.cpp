@@ -9,6 +9,6 @@ int main(int argc, char *argv[])
     MainWindow w;
 
 //    ros::spin();
-    w.show();
+    w.showFullScreen();
     return a.exec();
 }

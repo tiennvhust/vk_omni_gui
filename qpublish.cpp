@@ -9,7 +9,7 @@ QPublish::QPublish(ros::NodeHandle& nh)
 {
     this->nh = &nh;
     velocityPublisher = this->nh->advertise<geometry_msgs::Twist>("cmd_vel", 100);
-    plcCommandPublisher = this->nh->advertise<std_msgs::UInt8>("safety_command", 1);
+    plcCommandPublisher = this->nh->advertise<std_msgs::UInt8>("plc_commands", 1);
 }
 
 QPublish::~QPublish() {}
