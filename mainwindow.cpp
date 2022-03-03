@@ -316,8 +316,8 @@ MainWindow::MainWindow(QWidget *parent) :
             p_JoyStick, SLOT(setTwist(array<double, 3>)));
 
     //Wheel speed data connections
-    connect(p_QSubscribe, SIGNAL(velWheelSignal(sensor_msgs::JointState::ConstPtr)),
-            this, SLOT(setVelocityText(sensor_msgs::JointState::ConstPtr)));
+    connect(p_QSubscribe, SIGNAL(velWheelSignal(std_msgs::Float64MultiArray::ConstPtr)),
+            this, SLOT(setVelocityText(std_msgs::Float64MultiArray::ConstPtr)));
 
     //Odometry data connections
     connect(p_QSubscribe, SIGNAL(odomSignal(nav_msgs::Odometry::ConstPtr)),
