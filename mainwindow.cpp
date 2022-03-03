@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QSubscribe_thread(),
     JoyStick_thread()
 {
-    qRegisterMetaType<sensor_msgs::JointState::ConstPtr>("sensor_msgs::JointState::ConstPtr");
+    qRegisterMetaType<std_msgs::Float64MultiArray::ConstPtr>("std_msgs::Float64MultiArray::ConstPtr");
     qRegisterMetaType<geometry_msgs::Twist>("geometry_msgs::Twist");
     qRegisterMetaType<nav_msgs::Odometry::ConstPtr>("nav_msgs::Odometry::ConstPtr");
     qRegisterMetaType<array<double,3>>("array<double,3>");
@@ -402,21 +402,31 @@ void MainWindow::on_break_button_clicked()
 
 
 //Display velocity data
-void MainWindow::setVelocityText(const sensor_msgs::JointState::ConstPtr &msg)
+void MainWindow::setVelocityText(const std_msgs::Float64MultiArray::ConstPtr &msg)
 {
-    ui->left_wheel->setText(QString::number(msg->velocity[0]));
-    ui->right_wheel->setText(QString::number(msg->velocity[1]));
-    ui->rear_wheel->setText(QString::number(msg->velocity[2]));
+    int left_speed = static_cast<int>(msg->data[0] * 100);
+    int right_speed = static_cast<int>(msg->data[1] * 100);
+    int rear_speed = static_cast<int>(msg->data[2] * 100);
+
+    ui->left_wheel->setText(QString::number(static_cast<double>(left_speed / 100.0)));
+    ui->right_wheel->setText(QString::number(static_cast<double>(right_speed / 100.0)));
+    ui->rear_wheel->setText(QString::number(static_cast<double>(rear_speed / 100.0)));
 }
 
 //Display odometry data
 void MainWindow::setOdomText(const nav_msgs::Odometry::ConstPtr &msg)
 {
-    ui->linear_x->setText(QString::number(msg->twist.twist.linear.x));
-    ui->linear_y->setText(QString::number(msg->twist.twist.linear.y));
-    ui->angular->setText(QString::number(msg->twist.twist.angular.z));
-    ui->pose_x->setText(QString::number(msg->pose.pose.position.x));
-    ui->pose_y->setText(QString::number(msg->pose.pose.position.y));
+    int twist_x = static_cast<int>(msg->twist.twist.linear.x * 100);
+    int twist_y = static_cast<int>(msg->twist.twist.linear.y * 100);
+    int twist_z = static_cast<int>(msg->twist.twist.angular.z * 100);
+    int pose_x = static_cast<int>(msg->pose.pose.position.x * 100);
+    int pose_y = static_cast<int>(msg->pose.pose.position.y * 100);
+
+    ui->linear_x->setText(QString::number(static_cast<double>(twist_x / 100.0)));
+    ui->linear_y->setText(QString::number(static_cast<double>(twist_y / 100.0)));
+    ui->angular->setText(QString::number(static_cast<double>(twist_z / 100.0)));
+    ui->pose_x->setText(QString::number(static_cast<double>(pose_x / 100.0)));
+    ui->pose_y->setText(QString::number(static_cast<double>(pose_y / 100.0)));
 }
 
 //Display robot status

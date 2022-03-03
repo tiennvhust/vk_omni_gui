@@ -2,7 +2,7 @@
 #define QSUBSCRIBE_H
 
 #include <ros/ros.h>
-#include <sensor_msgs/JointState.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <nav_msgs/Odometry.h>
 #include <QObject>
 #include <std_msgs/UInt8.h>
@@ -20,7 +20,7 @@ public slots:
     void Subscribe();
 
 signals:
-    void velWheelSignal(sensor_msgs::JointState::ConstPtr);
+    void velWheelSignal(std_msgs::Float64MultiArray::ConstPtr);
     void odomSignal(nav_msgs::Odometry::ConstPtr);
     void statusSignal(robot_status);
 
@@ -30,7 +30,7 @@ private:
     ros::Subscriber odomSubscriber;
     ros::Subscriber statusSubscriber;
 
-    void velocityCallback(const sensor_msgs::JointState::ConstPtr &msg);
+    void velocityCallback(const std_msgs::Float64MultiArray::ConstPtr &msg);
     void odomCallback(const nav_msgs::Odometry::ConstPtr &msg);
     void statusCallback(std_msgs::UInt8 msg);
 };

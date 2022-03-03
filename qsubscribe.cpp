@@ -15,7 +15,7 @@ QSubscribe::~QSubscribe()
 
 void QSubscribe::Subscribe()
 {
-    velocitySubsciber = nh->subscribe<sensor_msgs::JointState>("/robot_kist/joint_states", 10, &QSubscribe::velocityCallback, this);
+    velocitySubsciber = nh->subscribe<std_msgs::Float64MultiArray>("/vk_motors/wheels_speed", 10, &QSubscribe::velocityCallback, this);
     odomSubscriber = nh->subscribe<nav_msgs::Odometry>("odom", 10, &QSubscribe::odomCallback, this);
     statusSubscriber = nh->subscribe("robot_status", 1, &QSubscribe::statusCallback, this);
     //  run ROS loop
@@ -23,7 +23,7 @@ void QSubscribe::Subscribe()
 }
 
 //Callback function for joint state subscriber
-void QSubscribe::velocityCallback(const sensor_msgs::JointState::ConstPtr &msg)
+void QSubscribe::velocityCallback(const std_msgs::Float64MultiArray::ConstPtr &msg)
 {
     emit velWheelSignal(msg);
 }

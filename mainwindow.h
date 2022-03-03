@@ -9,7 +9,7 @@
 #include <qsubscribe.h>
 #include <joystick.h>
 
-#include <sensor_msgs/JointState.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <nav_msgs/Odometry.h>
 
 namespace Ui {
@@ -54,7 +54,7 @@ private slots:
 
     void on_break_button_clicked();
 
-    void setVelocityText(const sensor_msgs::JointState::ConstPtr &msg);
+    void setVelocityText(const std_msgs::Float64MultiArray::ConstPtr &msg);
 
     void setOdomText(const nav_msgs::Odometry::ConstPtr &msg);
 
