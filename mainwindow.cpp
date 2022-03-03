@@ -93,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
                                     border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    border-color: lightgray; \
+                                    ConstPtrborder-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
@@ -404,6 +404,7 @@ void MainWindow::on_break_button_clicked()
 //Display velocity data
 void MainWindow::setVelocityText(const std_msgs::Float64MultiArray::ConstPtr &msg)
 {
+    if (msg->data.size() != 3) return; // to prevent crash
     int left_speed = static_cast<int>(msg->data[0] * 100);
     int right_speed = static_cast<int>(msg->data[1] * 100);
     int rear_speed = static_cast<int>(msg->data[2] * 100);
