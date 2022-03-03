@@ -15,9 +15,9 @@ QSubscribe::~QSubscribe()
 
 void QSubscribe::Subscribe()
 {
-    velocitySubsciber = nh->subscribe<std_msgs::Float64MultiArray>("/wheels_speed", 10, &QSubscribe::velocityCallback, this);
+    velocitySubsciber = nh->subscribe<std_msgs::Float64MultiArray>("wheels_speed", 10, &QSubscribe::velocityCallback, this);
     odomSubscriber = nh->subscribe<nav_msgs::Odometry>("odom", 10, &QSubscribe::odomCallback, this);
-    statusSubscriber = nh->subscribe("robot_status", 1, &QSubscribe::statusCallback, this);
+    statusSubscriber = nh->subscribe("robot_status", 10, &QSubscribe::statusCallback, this);
     //  run ROS loop
     ros::spin();
 }
