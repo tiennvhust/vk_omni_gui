@@ -852,11 +852,11 @@
    <zorder>frame</zorder>
    <zorder>label_2</zorder>
    <zorder>logo</zorder>
-   <zorder>status_label</zorder>
    <zorder>battery_status</zorder>
    <zorder>label_11</zorder>
    <zorder>cover_01</zorder>
    <zorder>cover_02</zorder>
+   <zorder>status_label</zorder>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

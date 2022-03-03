@@ -46,10 +46,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QIcon minus_icon(minus);
     QIcon ready_icon(ready);
 
-    normal_label.setColor(QPalette::Window, Qt::green);
-//    normal.setColor(QPalette::WindowText, Qt::white);
-    protective_label.setColor(QPalette::Window, Qt::yellow);
-    emergency_label.setColor(QPalette::Window, Qt::red);
+    normal_label.setColor(QPalette::WindowText, Qt::green);
+    protective_label.setColor(QPalette::WindowText, Qt::yellow);
+    emergency_label.setColor(QPalette::WindowText, Qt::red);
 
     ui->setupUi(this);
 
@@ -93,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
                                     border-style: solid; \
                                     border-radius: 10px; \
                                     border-width: 4px; \
-                                    ConstPtrborder-color: lightgray; \
+                                    border-color: lightgray; \
                                     padding: 6px; \
                                     color: white;} \
                                 QPushButton:pressed \
@@ -281,10 +280,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->resetButton->setIcon(ready_icon);
     ui->resetButton->setIconSize(QSize(60, 60));
 
-    ui->status_label->setText("Robot Status");
-    ui->status_label->setAutoFillBackground(true);
-//    ui->status_label->setPalette(normal_label);
-
     ui->battery_status->setValue(80);
 
     connect(this, SIGNAL(subscribeSignal()),
@@ -433,6 +428,7 @@ void MainWindow::setOdomText(const nav_msgs::Odometry::ConstPtr &msg)
 //Display robot status
 void MainWindow::onStatusUpdate(robot_status msg)
 {
+    ui->status_label->setAutoFillBackground(true);
     switch (msg)
     {
         case normal:
